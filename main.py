@@ -108,13 +108,10 @@ def get_school_info(browser, code):
     form.find("input", {"name": "cdCentro"})["value"] = str(code)
     form["action"] = "MostrarFichaCentro.icm"
     response = browser.submit(form, browser.url)
-    # print(response.text)
-    # table = response.soup.find("table", {"id": "tablaDatos.grafica3"})
     niveds = response.soup.find_all("input", id=re.compile("nivEd.*grafica3"))
     print("Niveles educativos " + str(niveds))
     for niv in niveds:
         label = response.soup.find_all("label", {"for": niv["id"]})
-        print(label[0].text)
         req = SOLICITUDES_BASE_DATA.copy()
         m = re.match("nivEd([0-9]+)", niv["id"])
         req["c0-e2"] = "string:" + m.group(1)
@@ -136,10 +133,6 @@ def get_school_info(browser, code):
         lvar = dict()
         ret = exec(snippet, None, lvar)
         for series in lvar["s0"]["listaSeries"]:
-            print(series["nombreSerie"])
-            print(series["serieX"])
-            print(series["serieY"])
-
             for i in range(len(series["serieX"])):
                 c.execute(f'''INSERT INTO PROCESO_ADMISION
                               VALUES (%s,"%s","%s","%s",%s);''' % (code, label[0].text, series["nombreSerie"], series["serieX"][i], series["serieY"][i]));
