@@ -17,7 +17,7 @@ def apply_schema():
     c = conn.cursor()
 
     c.execute("DROP TABLE IF EXISTS COLEGIOS")
-    c.execute(""" CREATE TABLE COLEGIOS (
+    c.execute("""CREATE TABLE COLEGIOS (
             Area_Territorial VARCHAR(255) NOT NULL,
             Codigo_Centro INTEGER NOT NULL PRIMARY KEY,
             Tipo_De_Centro VARCHAR(25),
@@ -32,7 +32,16 @@ def apply_schema():
             Email2 VARCHAR(255),
             Titularidad TEXT
         ); """)
-    print("Table is Ready")
+
+    c.execute("DROP TABLE IF EXISTS PROCESO_ADMISION")
+    c.execute("""CREATE TABLE PROCESO_ADMISION (
+            Codigo_Centro INTEGER,
+            Etapa VARCHAR(255),
+            Estado VARCHAR(255),
+            Periodo VARCHAR(255),
+            Cantidad INTEGER
+        ); """)
+
     conn.close()
 
 def insert_into_db(c, r):
@@ -92,6 +101,8 @@ def get_schools_info(browser):
     conn.close()
 
 def get_school_info(browser, code):
+    conn = sqlite3.connect("coles_cam.db")
+    c = conn.cursor()
     response = browser.open(EP_URL)
     form = response.soup.find("form", {"id": "formBusquedaSencilla"})
     form.find("input", {"name": "cdCentro"})["value"] = str(code)
@@ -129,6 +140,12 @@ def get_school_info(browser, code):
             print(series["serieX"])
             print(series["serieY"])
 
+            for i in range(len(series["serieX"])):
+                c.execute(f'''INSERT INTO PROCESO_ADMISION
+                              VALUES (%s,"%s","%s","%s",%s);''' % (code, label[0].text, series["nombreSerie"], series["serieX"][i], series["serieY"][i]));
+
+    conn.commit()
+    conn.close()
 #            break
 
 #            forms = page.soup.select("form")
@@ -188,7 +205,7 @@ def main():
     # get_common_data(browser)
     # get_schools_info(browser)
     get_school_info(browser, "28007103")
-    get_school_info(browser, "28080712")
+    # get_school_info(browser, "28080712")
 
 #    browser = mechanicalsoup.StatefulBrowser()
 #    page = browser.get(url)
