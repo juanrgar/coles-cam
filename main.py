@@ -87,7 +87,6 @@ def get_schools_info(browser):
 
     for r in rows:
         code = r[0]
-
         get_school_info(browser, code)
 
     conn.close()
@@ -101,13 +100,14 @@ def get_school_info(browser, code):
     # print(response.text)
     # table = response.soup.find("table", {"id": "tablaDatos.grafica3"})
     niveds = response.soup.find_all("input", id=re.compile("nivEd.*grafica3"))
-    print(niveds)
+    print("Niveles educativos " + str(niveds))
     for niv in niveds:
         label = response.soup.find_all("label", {"for": niv["id"]})
         print(label[0].text)
-        req = SOLICITUDES_BASE_DATA
+        req = SOLICITUDES_BASE_DATA.copy()
         m = re.match("nivEd([0-9]+)", niv["id"])
         req["c0-e2"] = "string:" + m.group(1)
+        req["c0-e1"] = "string:" + str(code)
         res = requests.post(SOLICITUDES_URL, req)
         snippet = res.text
         snippet = snippet.replace("var ", "")
@@ -188,6 +188,7 @@ def main():
     # get_common_data(browser)
     # get_schools_info(browser)
     get_school_info(browser, "28007103")
+    get_school_info(browser, "28080712")
 
 #    browser = mechanicalsoup.StatefulBrowser()
 #    page = browser.get(url)
