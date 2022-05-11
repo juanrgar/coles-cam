@@ -15,3 +15,7 @@ def index():
     schools = conn.execute('SELECT * FROM COLEGIOS').fetchall()
     conn.close()
     return render_template('index.html', schools=schools)
+
+@app.route('/school/<code>')
+def school_by_code(code):
+    return render_template('school.html')

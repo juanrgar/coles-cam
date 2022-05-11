@@ -42,6 +42,14 @@ def apply_schema():
             Cantidad INTEGER
         ); """)
 
+    c.execute("DROP TABLE IF EXISTS NUMERO_ALUMNOS")
+    c.execute("""CREATE TABLE NUMERO_ALUMNOS (
+            Codigo_Centro INTEGER,
+            Etapa VARCHAR(255),
+            Periodo VARCHAR(255),
+            Cantidad INTEGER
+        ); """)
+
     conn.close()
 
 def insert_into_db(c, r):
@@ -108,6 +116,15 @@ def get_school_info(browser, code):
     form.find("input", {"name": "cdCentro"})["value"] = str(code)
     form["action"] = "MostrarFichaCentro.icm"
     response = browser.submit(form, browser.url)
+
+    get_school_info_alumni(browser, code, response, c)
+
+    get_school_info_admission(browser, code, response, c)
+
+def get_school_info_alumni(browser, code, response, c):
+    table = response.soup.find_all("table", id="tablaDatos.grafica1")
+
+def get_school_info_admission(browser, code, response, c):
     niveds = response.soup.find_all("input", id=re.compile("nivEd.*grafica3"))
     print("Niveles educativos " + str(niveds))
     for niv in niveds:
