@@ -1,11 +1,23 @@
 {% block content %}
-    <h1>{% block title %} School {% endblock %}</h1>
-    <!-- {% for school in schools %} -->
-    <!--     <div class='school'> -->
-    <!--       <p>{{ school['Centro'] }}</p> -->
-    <!--       <p>{{ school['Area_Territorial'] }}</p> -->
-    <!--         <\!-- <h2>{{ school['Centro'] }}</h2> -\-> -->
-    <!--         <\!-- <p>{{ school['Centro'] }}</p> -\-> -->
-    <!--     </div> -->
-    <!-- {% endfor %} -->
+<h1>{% block title %} School {% endblock %}</h1>
+<h1>Centro: {{ info['Centro'] }}</h1>
+<div>
+  <h2>Admission</h2>
+  <table>
+    <tr>
+      <th>Etapa</th>
+      <th>Estado</th>
+      <th>Periodo</th>
+      <th>Cantidad</th>
+    </tr>
+    {% for a in admissions %}
+    <tr>
+      <td>{{ a['Etapa'] }}</td>
+      <td>{{ a['Estado'] }}</td>
+      <td>{{ a['Periodo'] }}</td>
+      <td>{{ a['Cantidad'] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
 {% endblock %}

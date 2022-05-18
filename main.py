@@ -211,11 +211,11 @@ def download_full_listing(browser):
 
 
 def main():
-    apply_schema()
+    # apply_schema()
     browser = mechanicalsoup.StatefulBrowser()
-    get_common_data(browser)
-    get_schools_info(browser)
-    # get_school_info(browser, "28007103")
+    # get_common_data(browser)
+    # get_schools_info(browser)
+    get_school_info(browser, "28007103")
     # get_school_info(browser, "28080712")
 
 #    browser = mechanicalsoup.StatefulBrowser()
