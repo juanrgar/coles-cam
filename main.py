@@ -73,7 +73,7 @@ def insert_into_db(c, r):
     print(r[1])
 
 def get_common_data(browser):
-#    downlaod_full_listing(browser)
+    download_full_listing(browser)
 
     with open(CSV_FILENAME, "r") as f:
         csvf = csv.reader(f, delimiter=';')
@@ -121,6 +121,9 @@ def get_school_info(browser, code):
 
     get_school_info_admission(browser, code, response, c)
 
+    conn.commit()
+    conn.close()
+
 def get_school_info_alumni(browser, code, response, c):
     table = response.soup.find_all("table", id="tablaDatos.grafica1")
 
@@ -154,8 +157,6 @@ def get_school_info_admission(browser, code, response, c):
                 c.execute(f'''INSERT INTO PROCESO_ADMISION
                               VALUES (%s,"%s","%s","%s",%s);''' % (code, label[0].text, series["nombreSerie"], series["serieX"][i], series["serieY"][i]));
 
-    conn.commit()
-    conn.close()
 #            break
 
 #            forms = page.soup.select("form")
@@ -210,11 +211,11 @@ def download_full_listing(browser):
 
 
 def main():
-    # apply_schema()
+    apply_schema()
     browser = mechanicalsoup.StatefulBrowser()
-    # get_common_data(browser)
-    # get_schools_info(browser)
-    get_school_info(browser, "28007103")
+    get_common_data(browser)
+    get_schools_info(browser)
+    # get_school_info(browser, "28007103")
     # get_school_info(browser, "28080712")
 
 #    browser = mechanicalsoup.StatefulBrowser()
