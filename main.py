@@ -6,11 +6,11 @@ import re
 import requests
 import sqlite3
 
-EP_URL = "https://gestiona3.madrid.org/wpad_pub/run/j/MostrarConsultaGeneral.icm"
+EP_URL = "https://gestiona.comunidad.madrid/wpad_pub/run/j/MostrarConsultaGeneral.icm"
 CSV_FILENAME = "_coles.csv"
 
 SOLICITUDES_BASE_DATA = {'callCount': '1', 'c0-scriptName': 'GraficasDWRAccion', 'c0-methodName': 'obtenerGrafica', 'c0-id': '3829_1650964201631', 'c0-e1': 'string:28007103', 'c0-e2': 'string:12', 'c0-e3': 'string:3', 'c0-e4': 'string:1', 'c0-e5': 'string:0', 'c0-param0': 'Object:{cdCentro:reference:c0-e1, cdnivelEducativo:reference:c0-e2, cdGrafica:reference:c0-e3, tipoGrafica:reference:c0-e4, tipoSolicitud:reference:c0-e5}', 'xml': 'true'}
-SOLICITUDES_URL = 'https://gestiona3.madrid.org/wpad_pub/dwr/exec/GraficasDWRAccion.obtenerGrafica.dwr'
+SOLICITUDES_URL = 'https://gestiona.comunidad.madrid/wpad_pub/dwr/exec/GraficasDWRAccion.obtenerGrafica.dwr'
 
 def apply_schema():
     conn = sqlite3.connect('coles_cam.db')
@@ -211,7 +211,7 @@ def download_full_listing(browser):
 
 
 def main():
-    # apply_schema()
+    apply_schema()
     browser = mechanicalsoup.StatefulBrowser()
     # get_common_data(browser)
     # get_schools_info(browser)
